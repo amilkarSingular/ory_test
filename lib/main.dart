@@ -8,7 +8,7 @@ import 'package:ory_client/ory_client.dart';
 Future main() async {
   // load the env file
 
-  final baseUrl = 'http://localhost:3005';
+  final baseUrl = 'https://flamboyant-snyder-zpe5w5u6vq.projects.oryapis.com';
 
   // create the dio client for http requests
   final options = BaseOptions(
@@ -31,11 +31,11 @@ Future main() async {
   dio.httpClientAdapter = adapter;
 
   final auth = AuthService(dio);
-
-  if (!(await auth.isAuthenticated())) {
-    _launchURL(baseUrl);
-    return;
-  }
+  await auth.authenticateWithPasskey(dio);
+  // if (!(await auth.isAuthenticated(dio))) {
+  //   _launchURL(baseUrl);
+  //   return;
+  // }
 
   runApp(MyApp(dio: dio, auth: auth));
 }
